@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  patient-checkout
+
+Globals:
+  Function:
+    Timeout: 20
+    Runtime: python3.9
+    Architectures:
+      - x86_64
+
+Resources:
+  PatientCheckoutBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${AWS::StackName}-${AWS::AccountId}-${AWS::Region}
+
