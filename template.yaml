@@ -15,4 +15,18 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub ${AWS::StackName}-${AWS::AccountId}-${AWS::Region}
+  PatientCheckoutFunction:
+    Properties:
+      CodeUri: patient_checkout/
+      Handler: patient_checkout.lambda_handler
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Sub ${AWS::StackName}-${AWS::AccountId}-${AWS::Region}
+      Events:
+        S3Event:
+          Type: S3
+          Properties:
+            Bucket: !Ref PatientCheckoutBucket
+            Events: s3.ObjectCreated:*
+
 
