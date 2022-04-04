@@ -6,9 +6,6 @@ Description: >
 Globals:
   Function:
     Timeout: 20
-    Runtime: python3.9
-    Architectures:
-      - x86_64
 
 Resources:
   PatientCheckoutBucket:
@@ -16,9 +13,13 @@ Resources:
     Properties:
       BucketName: !Sub ${AWS::StackName}-${AWS::AccountId}-${AWS::Region}
   PatientCheckoutFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: patient_checkout/
       Handler: patient_checkout.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
       Policies:
         - S3ReadPolicy:
             BucketName: !Sub ${AWS::StackName}-${AWS::AccountId}-${AWS::Region}
@@ -27,6 +28,6 @@ Resources:
           Type: S3
           Properties:
             Bucket: !Ref PatientCheckoutBucket
-            Events: s3.ObjectCreated:*
+            Events: s3:ObjectCreated:*
 
 
